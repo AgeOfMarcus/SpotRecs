@@ -5,7 +5,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
       getOAuthToken: cb => {
         // Replace with your own client ID and secret
         const CLIENT_ID = '13bbc4d460b944fa83ed8b3ac5cdec76';
-        const CLIENT_SECRET = '{env.SPOTIFY_CLIENT_SECRET}';
+        const CLIENT_SECRET = 'f843b85ebe464b5180801a89a1cfe403';
         fetch('https://accounts.spotify.com/api/token', {
           method: 'post',
           headers: {
