@@ -84,6 +84,6 @@ window.onSpotifyWebPlaybackSDKReady = () => {
             });
             document.getElementById('playlist-selection').style.display = 'block';
           });
-    })
+    }));
   };
   
