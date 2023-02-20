@@ -19,7 +19,7 @@ function getAccessToken(cb) {
 // Initialize the Spotify Web API
 window.onSpotifyWebPlaybackSDKReady = () => {
     const player = new Spotify.Player({
-      name: 'Spotify Playlist Extractor',
+      name: 'SpotRecs',
       getOAuthToken: cb => {
         // Replace with your own client ID and secret
         const CLIENT_ID = '13bbc4d460b944fa83ed8b3ac5cdec76';
