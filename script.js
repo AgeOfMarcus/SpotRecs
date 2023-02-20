@@ -5,7 +5,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
       getOAuthToken: cb => {
         // Replace with your own client ID and secret
         const CLIENT_ID = '13bbc4d460b944fa83ed8b3ac5cdec76';
-        const CLIENT_SECRET = 'YOUR_CLIENT_SECRET';
+        const CLIENT_SECRET = '{env.SPOTIFY_CLIENT_SECRET}';
         fetch('https://accounts.spotify.com/api/token', {
           method: 'post',
           headers: {
@@ -17,6 +17,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
         .then(response => response.json())
         .then(data => {
           cb(data.access_token);
+          globalThis.sp_access_token = data.access_token;
         });
       },
     });
@@ -30,7 +31,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
   loginButton.addEventListener('click', () => {
     // Replace with your own client ID and redirect URI
     const CLIENT_ID = '13bbc4d460b944fa83ed8b3ac5cdec76';
-    const REDIRECT_URI = 'YOUR_REDIRECT_URI';
+    const REDIRECT_URI = 'https://spotrecs.pages.dev';
     const scopes = ['playlist-read-private'];
     const url = `https://accounts.spotify.com/authorize?response_type=token&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(scopes.join(' '))}`;
     window.location = url;
@@ -40,7 +41,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
   const extractButton = document.getElementById('extract-button');
   extractButton.addEventListener('click', () => {
     // Replace with your own access token
-    const accessToken = 'YOUR_ACCESS_TOKEN';
+    const accessToken = sp_access_token;
     const playlistId = document.getElementById('playlist-dropdown').value;
     fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
       headers: {
@@ -64,7 +65,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
   // Populate the playlist dropdown with the user's playlists
   window.onload = () => {
     // Replace with your own access token
-    const accessToken = 'YOUR_ACCESS_TOKEN';
+    const accessToken = sp_access_token;
     fetch('https://api.spotify.com/v1/me/playlists', {
       headers: {
         'Authorization': `Bearer ${accessToken}`,

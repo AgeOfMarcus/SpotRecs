@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>SpotRecs</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <h1>SpotRecs</h1>
+    <p>ChatGPT-powered song recommendations for your Spotify playlists.</p>
+    <button id="login-button">Log in to Spotify</button>
+    <div id="playlist-selection">
+      <label for="playlist-dropdown">Select a playlist:</label>
+      <select id="playlist-dropdown">
+        <!-- Populate the options dynamically using JavaScript -->
+      </select>
+      <button id="extract-button">Extract</button>
+    </div>
+    <div id="song-list">
+      <!-- The song list will be populated dynamically using JavaScript -->
+    </div>
+    <!-- Add any necessary JavaScript files and scripts -->
+      <script src="https://sdk.scdn.co/spotify-player.js"></script>
+      <script src="script.js"></script>
+  </body>
+</html>
