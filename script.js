@@ -17,13 +17,13 @@ window.onSpotifyWebPlaybackSDKReady = () => {
         .then(response => response.json())
         .then(data => {
           cb(data.access_token);
-          globalThis.sp_access_token = data.access_token;
         });
       },
     });
   
     // Connect to the Spotify Web Player
     player.connect();
+    globalThis.sp_player = player;
   };
   
   // Log in to Spotify
@@ -42,46 +42,48 @@ window.onSpotifyWebPlaybackSDKReady = () => {
   const extractButton = document.getElementById('extract-button');
   extractButton.addEventListener('click', () => {
     // Replace with your own access token
-    const accessToken = sp_access_token;
-    const playlistId = document.getElementById('playlist-dropdown').value;
-    fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`,
-      },
-    })
-    .then(response => response.json())
-    .then(data => {
-      const songList = document.getElementById('song-list');
-      songList.innerHTML = '';
-      data.items.forEach(item => {
-        const songTitle = item.track.name;
-        const artistName = item.track.artists[0].name;
-        const listItem = document.createElement('div');
-        listItem.innerText = `${songTitle} - ${artistName}`;
-        songList.appendChild(listItem);
-      });
-    });
+    sp_player.getOAuthToken((accessToken => {
+        const playlistId = document.getElementById('playlist-dropdown').value;
+        fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+          },
+        })
+        .then(response => response.json())
+        .then(data => {
+          const songList = document.getElementById('song-list');
+          songList.innerHTML = '';
+          data.items.forEach(item => {
+            const songTitle = item.track.name;
+            const artistName = item.track.artists[0].name;
+            const listItem = document.createElement('div');
+            listItem.innerText = `${songTitle} - ${artistName}`;
+            songList.appendChild(listItem);
+          });
+        });
+    }))
   });
   
   // Populate the playlist dropdown with the user's playlists
   function loadPlaylists() {
     // Replace with your own access token
-    const accessToken = sp_access_token;
-    fetch('https://api.spotify.com/v1/me/playlists', {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`,
-      },
+    sp_player.getOAuthToken((accessToken => {
+        fetch('https://api.spotify.com/v1/me/playlists', {
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+            },
+          })
+          .then(response => response.json())
+          .then(data => {
+            const playlistDropdown = document.getElementById('playlist-dropdown');
+            data.items.forEach(item => {
+              const option = document.createElement('option');
+              option.value = item.id;
+              option.innerText = item.name;
+              playlistDropdown.appendChild(option);
+            });
+            document.getElementById('playlist-selection').style.display = 'block';
+          });
     })
-    .then(response => response.json())
-    .then(data => {
-      const playlistDropdown = document.getElementById('playlist-dropdown');
-      data.items.forEach(item => {
-        const option = document.createElement('option');
-        option.value = item.id;
-        option.innerText = item.name;
-        playlistDropdown.appendChild(option);
-      });
-      document.getElementById('playlist-selection').style.display = 'block';
-    });
   };
   
