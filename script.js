@@ -35,6 +35,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
     const scopes = ['playlist-read-private'];
     const url = `https://accounts.spotify.com/authorize?response_type=token&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(scopes.join(' '))}`;
     window.location = url;
+    loadPlaylists();
   });
   
   // Extract songs from a playlist
@@ -63,7 +64,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
   });
   
   // Populate the playlist dropdown with the user's playlists
-  window.onload = () => {
+  function loadPlaylists() {
     // Replace with your own access token
     const accessToken = sp_access_token;
     fetch('https://api.spotify.com/v1/me/playlists', {
